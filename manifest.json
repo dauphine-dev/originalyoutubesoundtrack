@@ -1,7 +1,7 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "Original Youtube Soundtrack",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Set the original soundtrack on YouTube videos",
   "homepage_url": "https://github.com/dauphine-dev/originalyoutubesoundtrack",
   "browser_specific_settings": {
@@ -11,11 +11,19 @@
     }
   },
   "permissions": [
-    "activeTab",
-    "tabs"
+    "tabs",
+    "*://www.youtube.com/*"
   ],
+  "background": {
+    "scripts": [
+      "js/background.js"
+    ]
+  },
   "icons": {
+    "16": "img/icon-16.png",
+    "32": "img/icon-32.png",
     "48": "img/icon-48.png",
+    "64": "img/icon-64.png",
     "96": "img/icon-96.png",
     "128": "img/icon-128.png"
   },
@@ -31,8 +39,21 @@
         "*://www.youtubeeducation.com/*"
       ],
       "js": [
-        "js/content.js"
-      ]
+        "js/content_youtube.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "js/content_embedded.js"
+      ],
+      "run_at": "document_idle"
     }
-  ]
+  ],
+  "browser_action": {
+    "default_title": "Original Youtube Soundtrack"
+  }
 }
