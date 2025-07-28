@@ -1,7 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Original Youtube Soundtrack",
-  "version": "1.0.1",
+  "version": "1.0.1.10201",
+  "version_name": "1.0.2 RC1",
   "description": "Set the original soundtrack on YouTube videos",
   "homepage_url": "https://github.com/dauphine-dev/originalyoutubesoundtrack",
   "browser_specific_settings": {

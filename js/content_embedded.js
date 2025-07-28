@@ -1,14 +1,15 @@
 class ContentEmbedded {
-    static get instance() { return (this._instance = this._instance || new this()); }
+    static get instance() { if (!this._instance) { this._instance = new this(); } return this._instance; }
 
     constructor() {
         this._videoLists = [];
-        this.GetVideosYtipr();
+        this.getVideosYtipr();
         this.ObserveDOM();
     }
 
-    GetVideosYtipr() {
+    getVideosYtipr() {
         const iframes = document.querySelectorAll('iframe');
+        // @ts-ignore
         for (const iframe of iframes) {
             const src = iframe.src;
             const match = src.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/);
@@ -30,11 +31,12 @@ class ContentEmbedded {
     }
 
     ObserveDOM() {
-        const observer = new MutationObserver(() => this.GetVideosYtipr());
+        const observer = new MutationObserver(() => this.getVideosYtipr());
         observer.observe(document.body, {
             childList: true,
             subtree: true
         });
     }
 }
-ContentEmbedded.instance;
+//Disabled :  setIframeAudioTrack is not implemented
+//ContentEmbedded.instance;
