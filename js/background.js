@@ -60,11 +60,9 @@ class Background {
               const ytipr = JSON.parse(jsonString);
               const audioTrack = ytipr?.streamingData?.adaptiveFormats?.find(entry => entry?.audioTrack?.id === ytipr?.captions?.playerCaptionsTracklistRenderer?.audioTracks[ytipr.captions.playerCaptionsTracklistRenderer.defaultAudioTrackIndex].audioTrackId)?.audioTrack?.displayName;
               let defaultSoundTrackName = audioTrack?.displayName;
-              console.log("defaultSoundTrackName1:", message.videoId, defaultSoundTrackName);
 
               if (!defaultSoundTrackName) {
                 const defaultAudioTrackId = ytipr?.streamingData?.adaptiveFormats?.find(entry => entry?.audioTrack?.audioIsDefault === true)?.audioTrack?.id;
-                console.log("defaultAudioTrackId:", message.videoId, defaultAudioTrackId);
                 const response = await fetch(url);
                 const html = await response.text();
                 const jsonString = this.extractYtInitialPlayerResponseJson(html);
@@ -72,11 +70,9 @@ class Background {
                   try {
                     const ytipr = JSON.parse(jsonString);
                     defaultSoundTrackName = ytipr?.streamingData?.adaptiveFormats?.find(entry => entry?.audioTrack?.id === defaultAudioTrackId)?.audioTrack?.displayName;
-                    console.log("defaultSoundTrackName2:", message.videoId, defaultSoundTrackName);
                   } catch { sendResponse({ defaultSoundTrackName: null }); }
                 }
               }
-              console.log("### send defaultSoundTrackName(b):", message.videoId, defaultSoundTrackName);
               sendResponse({ defaultSoundTrackName });
 
             } catch { sendResponse({ defaultSoundTrackName: null }); }

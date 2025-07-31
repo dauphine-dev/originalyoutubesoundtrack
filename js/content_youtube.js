@@ -10,7 +10,6 @@ class ContentYoutube {
 
   listenForBackgroundMessage() {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      console.log("### ListenForBackgroundMessage:", request);
       if (request.message.type === "SET_AUDIO_TRACK_FORCE") {
         this.setAudioTrackForce();
       }
@@ -19,10 +18,8 @@ class ContentYoutube {
 
   listenForPlayerResponse() {
     window.addEventListener("DefaultSoundTrackNameEvent", (event) => {
-      console.log("### received defaultSoundTrackName(pr1):", event.detail);
       if (event.detail) {
         this._defaultSoundTrackName = event.detail;
-        console.log("### received defaultSoundTrackName(pr2):", this._defaultSoundTrackName);
         this.setAudioTrack();
       }
     });
@@ -48,13 +45,10 @@ class ContentYoutube {
 
 
   setAudioTrackForce() {
-    console.log("### SetAudioTrackForce0");
     if (!this._defaultSoundTrackName) {
       const onResponse = (response) => {
-        console.log("### received defaultSoundTrackName(f1):", response?.defaultSoundTrackName);
         if (response?.defaultSoundTrackName) {
           this._defaultSoundTrackName = response?.defaultSoundTrackName;
-          console.log("### received defaultSoundTrackName(f2):", this._defaultSoundTrackName);
           this.setAudioTrack();
         }
       }
@@ -64,41 +58,32 @@ class ContentYoutube {
   }
 
   setAudioTrack() {
-    console.log("### SetAudioTrack0");
     if (!this._defaultSoundTrackName) { return; }
-    console.log("### SetAudioTrack1");
     const settingsMenu = document.querySelector('.ytp-button.ytp-settings-button');
     const activeTrackMenuEntry = document.querySelector('div.ytp-menuitem.ytp-audio-menu-item[role="menuitem"] .ytp-menuitem-content');
     if (!activeTrackMenuEntry) { settingsMenu?.click(); settingsMenu?.click(); }
-    console.log("### SetAudioTrack2");
 
     if (!activeTrackMenuEntry?.textContent) {
       if (this._tries > 20) { return; } //tries for 2 seconds, then abort.
-      console.log("### SetAudioTrack(retry)");
       setTimeout(() => { this.setAudioTrack(); }, 100);
       this._tries++
       return;
     }
 
     if (activeTrackMenuEntry?.textContent === this._defaultSoundTrackName) { return; }
-    console.log("### SetAudioTrack3");
     try {
       settingsMenu?.click(); // open settings
       if (activeTrackMenuEntry?.textContent === this._defaultSoundTrackName) { return; }
-      console.log("### SetAudioTrack4");
       activeTrackMenuEntry?.click();
       // @ts-ignore
       const soundTracks = [...document.querySelectorAll('div.ytp-menuitem')];
       const targetTracMenuEntry = soundTracks.filter(x => x.textContent === this._defaultSoundTrackName)?.[0];
       targetTracMenuEntry?.click();
-      if (activeTrackMenuEntry?.textContent === this._defaultSoundTrackName) { console.log("### SetAudioTrack(done"); }
-      console.log("### SetAudioTrack5");
+      //if (activeTrackMenuEntry?.textContent === this._defaultSoundTrackName) { console.log("### SetAudioTrack(done"); }
     }
     finally {
       settingsMenu?.click(); // close settings
-      console.log("### SetAudioTrack6");
     }
-    console.log("### SetAudioTrack7");
   }
 
 }

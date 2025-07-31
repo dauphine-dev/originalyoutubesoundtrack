@@ -26,7 +26,6 @@
                     defaultSoundTrackName = adaptiveFormats[0]?.audioTrack?.displayName;
                   }
                   if (defaultSoundTrackName) {
-                    console.log("### send defaultSoundTrackName(f):", defaultSoundTrackName);
                     window.dispatchEvent(new CustomEvent("DefaultSoundTrackNameEvent", { detail: defaultSoundTrackName }));
                   }
                 }
@@ -59,7 +58,6 @@
             }
 
             if (defaultSoundTrackName) {
-              console.log("### send defaultSoundTrackName(r):", defaultSoundTrackName);
               window.dispatchEvent(new CustomEvent("DefaultSoundTrackNameEvent", { detail: defaultSoundTrackName }));
             }
           }
