@@ -8,15 +8,16 @@ class ContentEmbedded {
     }
 
     setIframeAudioTrack() {
-        const hl = 'hl=cs';
-        const iframes = document.querySelectorAll('iframe');
-        // @ts-ignore
-        for (const iframe of iframes) {
-            if (!iframe.src.includes('www.youtube.com/embed/')) { continue; }
-            if (iframe.src.includes(`?${hl}`) || iframe.src.includes(`&${hl}`)) { continue; }
-            const sep = (iframe.src.includes('?') ? '&' : '?');
-            iframe.src = `${iframe.src}${sep}${hl}`
-        }
+        const targetLang = 'cs';
+        document.querySelectorAll('iframe')
+            .forEach(iframe => {
+                const src = iframe.src;
+                if (!src.includes('www.youtube.com/embed/')) return;
+                const url = new URL(src);
+                if (url.searchParams.get('hl') === targetLang) return;
+                url.searchParams.set('hl', targetLang);
+                iframe.src = url.toString();
+            });
     }
 
     ObserveDOM() {
