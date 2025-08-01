@@ -13,7 +13,7 @@ class ContentEmbedded {
         // @ts-ignore
         for (const iframe of iframes) {
             if (!iframe.src.includes('www.youtube.com/embed/')) { continue; }
-            if (iframe.src.includes(`?${hl}=`) || iframe.src.includes(`&${hl}=`)) { continue; }
+            if (iframe.src.includes(`?${hl}`) || iframe.src.includes(`&${hl}`)) { continue; }
             const sep = (iframe.src.includes('?') ? '&' : '?');
             iframe.src = `${iframe.src}${sep}${hl}`
         }
